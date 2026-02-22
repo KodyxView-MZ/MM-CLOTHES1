@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-MZ">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MM CLOTHES | LOADING...</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@900&family=UnifrakturMaguntia&display=swap');
+
+        body {
+            background-color: #000;
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: white;
+        }
+
+        .container {
+            position: relative;
+            text-align: center;
+        }
+
+        .brand-name {
+            font-family: 'UnifrakturMaguntia', serif;
+            font-size: 5rem;
+            opacity: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            white-space: nowrap;
+        }
+
+        .brutal-text {
+            font-family: 'Unbounded', sans-serif;
+            font-size: 10vw;
+            line-height: 0.8;
+            letter-spacing: -0.05em;
+            display: none;
+            opacity: 0;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            transform: scaleY(0);
+            z-index: 100;
+        }
+
+        .glitch-line {
+            position: absolute;
+            height: 2px;
+            background: #3b82f6;
+            width: 100%;
+            left: 0;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="glitch-line" id="line"></div>
+    
+    <div class="container">
+        <div class="brand-name" id="logo1">mm clothes</div>
+        
+        <div class="brutal-text" id="logo2">
+            STREET<br><span class="text-blue-600">POWER</span>
+        </div>
+    </div>
+
+    <div class="overlay" id="curtain"></div>
+
+    <script>
+        const tl = gsap.timeline({
+            onComplete: () => {
+                // Redireciona para page.html após o fim da animação
+                window.location.href = "page.html";
+            }
+        });
+
+        // 1. O nome clássico surge e brilha
+        tl.to("#logo1", { 
+            duration: 1.2, 
+            opacity: 1, 
+            y: "-=20", 
+            ease: "expo.out" 
+        })
+        
+        // 2. Glitch rápido/Flash
+        .to("#logo1", { duration: 0.1, opacity: 0, delay: 0.5 })
+        .set("#line", { display: "block" })
+        .to("#line", { duration: 0.1, scaleY: 20, opacity: 0, ease: "power4.in" })
+        
+        // 3. O texto BRUTAL entra com tudo
+        .set("#logo2", { display: "block" })
+        .to("#logo2", { 
+            duration: 0.8, 
+            opacity: 1, 
+            scale: 1.2, 
+            ease: "back.out(1.7)" 
+        })
+        
+        // 4. Efeito de Zoom Infinito (Saindo da tela)
+        .to("#logo2", { 
+            duration: 1, 
+            scale: 50, 
+            opacity: 0, 
+            filter: "blur(20px)",
+            ease: "expo.in" 
+        })
+        
+        // 5. Cortina branca fecha e abre para a próxima página
+        .to("#curtain", { 
+            duration: 0.6, 
+            transformOrigin: "bottom", 
+            scaleY: 1, 
+            ease: "power4.inOut" 
+        });
+
+    </script>
+</body>
+</html>
