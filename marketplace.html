@@ -406,11 +406,310 @@
             transform: rotate(-5deg);
             box-shadow: 5px 5px 0 #3b82f6;
         }
+
+        /* Modal de Pedido - CORRIGIDO */
+        .order-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            width: 90%;
+            max-width: 500px;
+            background: #111;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 40px;
+            padding: 30px;
+            z-index: 2000;
+            transition: all 0.3s;
+        }
+
+        .order-modal.open {
+            display: block;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 1999;
+        }
+
+        .modal-overlay.open {
+            display: block;
+        }
+
+        .payment-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .payment-option:hover {
+            border-color: #3b82f6;
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .payment-option.selected {
+            border-color: #3b82f6;
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .payment-option input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            accent-color: #3b82f6;
+        }
+
+        .payment-logo {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            background: white;
+            border-radius: 8px;
+            padding: 4px;
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 30px;
+            padding: 8px 15px;
+            width: fit-content;
+        }
+
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .quantity-btn:hover {
+            background: #3b82f6;
+        }
+
+        .quantity-value {
+            font-size: 16px;
+            font-weight: 800;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .ref-badge {
+            font-family: 'UnifrakturMaguntia', serif;
+            font-size: 14px;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid #3b82f6;
+            border-radius: 30px;
+            padding: 5px 15px;
+            display: inline-block;
+        }
+
+        .success-message {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .success-message h3 {
+            font-family: 'UnifrakturMaguntia', serif;
+            font-size: 32px;
+            color: #3b82f6;
+            margin-bottom: 20px;
+        }
+
+        .input-field {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 16px 20px;
+            width: 100%;
+            color: white;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .input-field:focus {
+            border-color: #3b82f6;
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .input-field::placeholder {
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+            font-weight: 600;
+            font-size: 13px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 16px 24px;
+            border-radius: 40px;
+            width: 100%;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 500;
+            font-size: 12px;
+            padding: 12px 20px;
+            border-radius: 40px;
+            transition: all 0.2s;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-secondary:hover {
+            border-color: #3b82f6;
+            color: white;
+            background: rgba(59, 130, 246, 0.1);
+        }
     </style>
 </head>
 <body class="overflow-x-hidden">
 
     <div class="scanline"></div>
+
+    <!-- Modal Overlay -->
+    <div class="modal-overlay" id="modalOverlay" onclick="fecharModalPedido()"></div>
+
+    <!-- Modal de Pedido -->
+    <div class="order-modal" id="orderModal">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="font-['UnifrakturMaguntia'] text-2xl">MM CLOTHES</h3>
+            <button onclick="fecharModalPedido()" class="text-2xl text-white/50 hover:text-white">&times;</button>
+        </div>
+
+        <div id="orderFormContainer">
+            <div class="mb-6">
+                <div class="ref-badge" id="orderRef">Ref: #AH69W</div>
+            </div>
+
+            <div class="space-y-4">
+                <!-- Nome -->
+                <div>
+                    <label class="block text-xs text-neutral-500 mb-2">Nome Completo</label>
+                    <input type="text" id="orderName" class="input-field" placeholder="Seu nome" required>
+                </div>
+
+                <!-- Número de Celular -->
+                <div>
+                    <label class="block text-xs text-neutral-500 mb-2">Número de Celular</label>
+                    <input type="tel" id="orderPhone" class="input-field" placeholder="84 000 0000" required>
+                </div>
+
+                <!-- Localização -->
+                <div>
+                    <label class="block text-xs text-neutral-500 mb-2">Localização (Bairro/Cidade)</label>
+                    <input type="text" id="orderLocation" class="input-field" placeholder="Ex: Sommerschield, Maputo" required>
+                </div>
+
+                <!-- Método de Pagamento -->
+                <div>
+                    <label class="block text-xs text-neutral-500 mb-2">Método de Pagamento</label>
+                    
+                    <div class="payment-option" onclick="selectPayment('mpesa')">
+                        <input type="radio" name="payment" id="payMpesa" value="mpesa" class="w-5 h-5">
+                        <img src="Screenshot_20260223_004653_Google.jpg" class="payment-logo" alt="M-Pesa">
+                        <span class="flex-1">M-Pesa</span>
+                    </div>
+
+                    <div class="payment-option" onclick="selectPayment('emola')">
+                        <input type="radio" name="payment" id="payEmola" value="emola" class="w-5 h-5">
+                        <img src="Screenshot_20260223_004737_Google.jpg" class="payment-logo" alt="E-mola">
+                        <span class="flex-1">E-mola</span>
+                    </div>
+
+                    <div class="payment-option" onclick="selectPayment('entrega')">
+                        <input type="radio" name="payment" id="payEntrega" value="entrega" class="w-5 h-5">
+                        <img src="https://cdn-icons-png.flaticon.com/512/2331/2331966.png" class="payment-logo" alt="Pagamento na Entrega">
+                        <span class="flex-1">Pagamento na Entrega</span>
+                    </div>
+                </div>
+
+                <!-- Quantidade -->
+                <div>
+                    <label class="block text-xs text-neutral-500 mb-2">Quantidade</label>
+                    <div class="quantity-control">
+                        <div class="quantity-btn" onclick="alterarQuantidade(-1)">−</div>
+                        <div class="quantity-value" id="orderQuantity">1</div>
+                        <div class="quantity-btn" onclick="alterarQuantidade(1)">+</div>
+                    </div>
+                </div>
+
+                <!-- Nota Opcional -->
+                <div>
+                    <label class="block text-xs text-neutral-500 mb-2">Nota Opcional</label>
+                    <textarea id="orderNote" class="input-field" rows="2" placeholder="Alguma observação?"></textarea>
+                </div>
+
+                <!-- Total -->
+                <div class="bg-white/5 p-4 rounded-xl">
+                    <div class="flex justify-between mb-2">
+                        <span class="text-xs text-neutral-400">Produto:</span>
+                        <span class="text-sm font-bold" id="orderProductName"></span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-xs text-neutral-400">Total:</span>
+                        <span class="text-lg font-black text-blue-600" id="orderTotal">0 MT</span>
+                    </div>
+                </div>
+
+                <!-- Botão Confirmar -->
+                <button onclick="confirmarPedido()" class="btn-primary mt-4">
+                    CONFIRMAR PEDIDO
+                </button>
+            </div>
+        </div>
+
+        <!-- Mensagem de Sucesso -->
+        <div id="successMessage" class="success-message hidden">
+            <h3>OBRIGADO!</h3>
+            <p class="text-neutral-400 mb-4">Seu pedido foi enviado com sucesso.</p>
+            <div class="ref-badge mb-6" id="successRef">Ref: #AH69W</div>
+            <p class="text-xs text-neutral-500 mb-6">Entraremos em contacto em breve.</p>
+            <button onclick="fecharModalPedido()" class="btn-secondary">FECHAR</button>
+        </div>
+    </div>
 
     <div id="marketIntro">
         <div class="grid-decor" id="gridDecor"></div>
@@ -461,11 +760,20 @@
     <footer class="p-16 border-t border-white/5 mt-20 flex flex-col items-center">
         <div class="text-[40px] font-black opacity-5 mb-4 font-brutal">KODYX_ENGINE</div>
         <p class="text-[8px] text-gray-700 font-black uppercase tracking-[1em]">OFFICIAL STREET ARCHIVE • 2026</p>
+        
+        <!-- Desenvolvido por Vantix -->
+        <div class="mt-8 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 w-full">
+            <p class="text-[9px] font-black text-gray-600 uppercase tracking-widest">© 2026 MM CLOTHES. ALL RIGHTS RESERVED.</p>
+            <div class="flex items-center gap-3">
+                <span class="text-[9px] font-black uppercase text-gray-500">DESENVOLVIDO POR VANTIX TECH</span>
+                <img src="ei_1771694350645-removebg-preview.png" alt="VANTIX SOFTWARE" class="h-24 w-auto opacity-70 hover:opacity-100 transition">
+            </div>
+        </div>
     </footer>
 
     <script>
         // ============================================
-        // SUPABASE COM NOME DIFERENTE (para evitar conflito)
+        // SUPABASE
         // ============================================
         const mmSupabase = window.supabase.createClient(
             'https://aeordycejjoayevdsuts.supabase.co',
@@ -498,7 +806,121 @@
         let produtos = [];
         let categoriaAtiva = 'all';
         let termoBusca = '';
+        let currentProduct = null;
+        let currentQuantity = 1;
+        let selectedPayment = 'mpesa';
         const urgencyOrder = { 'urgente': 1, 'leve': 2, 'normal': 3 };
+
+        // ============================================
+        // FUNÇÕES DO MODAL - CORRIGIDAS
+        // ============================================
+        window.abrirModalPedido = function(produtoId) {
+            console.log('Abrindo modal para produto:', produtoId);
+            currentProduct = produtos.find(p => p.id == produtoId);
+            if (!currentProduct) {
+                console.error('Produto não encontrado');
+                return;
+            }
+
+            // Gerar referência aleatória
+            const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            const numbers = '0123456789';
+            let ref = '#';
+            for (let i = 0; i < 2; i++) ref += letters[Math.floor(Math.random() * letters.length)];
+            for (let i = 0; i < 2; i++) ref += numbers[Math.floor(Math.random() * numbers.length)];
+            document.getElementById('orderRef').textContent = `Ref: ${ref}`;
+            document.getElementById('successRef').textContent = `Ref: ${ref}`;
+
+            // Reset
+            currentQuantity = 1;
+            document.getElementById('orderQuantity').textContent = '1';
+            document.getElementById('orderName').value = '';
+            document.getElementById('orderPhone').value = '';
+            document.getElementById('orderLocation').value = '';
+            document.getElementById('orderNote').value = '';
+            document.getElementById('orderProductName').textContent = currentProduct.nome;
+            document.getElementById('orderTotal').textContent = `${currentProduct.preco} MT`;
+
+            // Selecionar M-Pesa por padrão
+            selectPayment('mpesa');
+
+            // Mostrar modal
+            document.getElementById('orderFormContainer').classList.remove('hidden');
+            document.getElementById('successMessage').classList.add('hidden');
+            document.getElementById('modalOverlay').classList.add('open');
+            document.getElementById('orderModal').classList.add('open');
+        };
+
+        window.fecharModalPedido = function() {
+            document.getElementById('modalOverlay').classList.remove('open');
+            document.getElementById('orderModal').classList.remove('open');
+        };
+
+        window.selectPayment = function(method) {
+            selectedPayment = method;
+            document.getElementById('payMpesa').checked = (method === 'mpesa');
+            document.getElementById('payEmola').checked = (method === 'emola');
+            document.getElementById('payEntrega').checked = (method === 'entrega');
+        };
+
+        window.alterarQuantidade = function(delta) {
+            currentQuantity = Math.max(1, currentQuantity + delta);
+            document.getElementById('orderQuantity').textContent = currentQuantity;
+            if (currentProduct) {
+                const total = currentProduct.preco * currentQuantity;
+                document.getElementById('orderTotal').textContent = `${total} MT`;
+            }
+        };
+
+        window.confirmarPedido = function() {
+            const nome = document.getElementById('orderName').value;
+            const phone = document.getElementById('orderPhone').value;
+            const location = document.getElementById('orderLocation').value;
+            const note = document.getElementById('orderNote').value;
+
+            if (!nome || !phone || !location) {
+                alert('Preencha todos os campos obrigatórios!');
+                return;
+            }
+
+            // Gerar ref novamente para garantir
+            const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            const numbers = '0123456789';
+            let ref = '';
+            for (let i = 0; i < 2; i++) ref += letters[Math.floor(Math.random() * letters.length)];
+            for (let i = 0; i < 2; i++) ref += numbers[Math.floor(Math.random() * numbers.length)];
+
+            // Construir mensagem do WhatsApp
+            const paymentNames = {
+                'mpesa': 'M-Pesa',
+                'emola': 'E-mola',
+                'entrega': 'Pagamento na Entrega'
+            };
+
+            let mensagem = `MM CLOTHES. \n`;
+            mensagem += `Novo pedido! ⚡️\n`;
+            mensagem += `Ref: #${ref}\n\n`;
+            mensagem += `*PRODUTO*\n`;
+            mensagem += `${currentProduct.nome}\n`;
+            mensagem += `📥Quantidade: ${currentQuantity}\n`;
+            mensagem += `💵Valor: ${currentProduct.preco * currentQuantity} MT\n\n`;
+            mensagem += `📄*DADOS DO CLIENTE*\n`;
+            mensagem += `🪪Nome: ${nome}\n`;
+            mensagem += `☎️Celular: ${phone}\n`;
+            mensagem += `📍Localização: ${location}\n`;
+            mensagem += `💳Pagamento: ${paymentNames[selectedPayment]}\n`;
+            if (note) mensagem += `✒️Observação: ${note}\n`;
+
+            // Codificar para URL
+            const url = `https://wa.me/258860021418?text=${encodeURIComponent(mensagem)}`;
+
+            // Abrir WhatsApp
+            window.open(url, '_blank');
+
+            // Mostrar mensagem de sucesso
+            document.getElementById('orderFormContainer').classList.add('hidden');
+            document.getElementById('successMessage').classList.remove('hidden');
+        };
 
         // ============================================
         // CARREGAR PRODUTOS
@@ -610,36 +1032,12 @@
                             </div>
                             <div class="product-footer">
                                 <div class="product-date">${data}</div>
-                                <button class="btn-buy" onclick="adicionarSacola('${p.id}')">COMPRAR</button>
+                                <button class="btn-buy" onclick="abrirModalPedido('${p.id}')">COMPRAR</button>
                             </div>
                         </div>
                     </div>
                 `;
             }).join('');
-        }
-
-        // ============================================
-        // SACOLA
-        // ============================================
-        window.adicionarSacola = function(id) {
-            const produto = produtos.find(p => p.id == id);
-            if (produto) {
-                let sacola = JSON.parse(localStorage.getItem('sacolaMM')) || [];
-                sacola.push(produto);
-                localStorage.setItem('sacolaMM', JSON.stringify(sacola));
-                document.getElementById('bagCount').innerHTML = `BAG (${sacola.length})`;
-                
-                const notif = document.createElement('div');
-                notif.className = 'update-notification';
-                notif.textContent = `${produto.nome} adicionado!`;
-                document.body.appendChild(notif);
-                setTimeout(() => notif.remove(), 3000);
-            }
-        };
-
-        function atualizarContagemSacola() {
-            const sacola = JSON.parse(localStorage.getItem('sacolaMM')) || [];
-            document.getElementById('bagCount').innerHTML = `BAG (${sacola.length})`;
         }
 
         // ============================================
@@ -654,7 +1052,6 @@
         // INICIAR
         // ============================================
         carregarProdutos();
-        atualizarContagemSacola();
     </script>
 </body>
-</html>
+            </html>
